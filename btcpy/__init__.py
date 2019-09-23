@@ -8,6 +8,9 @@
 # No part of btcpy, including this file, may be copied, modified,
 # propagated, or distributed except according to the terms contained in the
 # LICENSE.md file.
+import threading
 
 __all__ = ['utils',
            'ds']
+
+lock = threading.Lock()
