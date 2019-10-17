@@ -11,13 +11,13 @@
 
 import hmac
 from hashlib import sha512
-from base58 import b58decode_check, b58encode_check
 from ecdsa import VerifyingKey
 from ecdsa.ellipticcurve import INFINITY
 from ecdsa.curves import SECP256k1
 from ecdsa.ecdsa import generator_secp256k1
 from abc import ABCMeta, abstractmethod
 
+from ..lib.base58 import b58decode_check, b58encode_check
 from ..lib.types import HexSerializable
 from ..lib.parsing import Stream, Parser
 from ..constants import NETWORKS
