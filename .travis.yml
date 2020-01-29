@@ -8,4 +8,4 @@ python:
 install:
   - pip install .[develop]
 script:
-  - python tests/unit.py
+  - cd tests/ && python unit.py
