@@ -234,9 +234,9 @@ class TestStackData(unittest.TestCase):
     @staticmethod
     def get_test_data():
         from os import walk
-        files = next(walk('./stack_data/data/rand_data'))[2]
+        files = next(walk('./data/stack_data/rand_data'))[2]
         for file in files:
-            with open('stack_data/data/rand_data/'+file, 'rb') as infile:
+            with open('data/stack_data/rand_data/'+file, 'rb') as infile:
                 yield bytearray(infile.read())
 
     def __init__(self, *args, **kwargs):
