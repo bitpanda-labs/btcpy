@@ -36,6 +36,33 @@ class BitcoinConstants(Constants):
     private_key_version_strings = {'mainnet': b'\x04\x88\xad\xe4', 'testnet': b'\x04\x35\x83\x94'}
 
 
+class DogecoinConstants(Constants):
+    wif_prefixes = {'dogecoin': 0x9e, 'dogecointest': 0xf1}
+
+    raw_prefixes = {('dogecoin', 'p2pkh'): bytearray(b'\x1e'),
+                    ('dogecointest', 'p2pkh'): bytearray(b'\x71'),
+                    ('dogecoin', 'p2sh'): bytearray(b'\x16'),
+                    ('dogecointest', 'p2sh'): bytearray(b'\xc4')}
+
+    prefixes = {'D': ('p2pkh', 'dogecoin'),
+                'm': ('p2pkh', 'dogecointest'),
+                'n': ('p2pkh', 'dogecointest'),
+                'A': ('p2sh', 'dogecoin'),
+                '2': ('p2sh', 'dogecointest')}
+
+    net_to_hrp = {'dogecoin': 'bc',
+                  'dogecointest': 'tb'}
+
+    hrp_to_net = {'bc': 'dogecoin',
+                  'tb': 'dogecointest'}
+
+    key_prefixes = {'x': 'dogecoin', 't': 'dogecointest'}
+
+    public_key_version_strings = {'dogecoin': b'\x04\x88\xb2\x1e', 'dogecointest': b'\x04\x35\x87\xcf'}
+
+    private_key_version_strings = {'dogecoin': b'\x04\x88\xad\xe4', 'dogecointest': b'\x04\x35\x83\x94'}
+
+
 class DashConstants(Constants):
     wif_prefixes = {'dash': 0xCC, 'dashtest': 0xEF}
 
@@ -165,4 +192,7 @@ NETWORKS = {'mainnet': BitcoinConstants(),
             'komodo': KomodoConstants(),
             'komodotest': KomodoConstants(),
             'zcash': ZcashConstants(),
-            'zcashtest': ZcashConstants()}
+            'zcashtest': ZcashConstants(),
+            'dogecoin': DogecoinConstants(),
+            'dogecointest': DogecoinConstants()
+            }

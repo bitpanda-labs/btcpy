@@ -14,7 +14,7 @@ from distutils.core import setup
 from setuptools import find_packages
 
 setup(name='chainside-btcpy-multi',
-      version='0.2.78',
+      version='0.2.80',
       packages=find_packages(),
       install_requires=['ecdsa>=0.13.0,<0.15.0'],
       extras_require={'develop': ['python-bitcoinlib==0.7.0']},
