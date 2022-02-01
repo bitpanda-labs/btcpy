@@ -16,7 +16,7 @@ from setuptools import find_packages
 setup(name='chainside-btcpy-multi',
       version='0.2.80',
       packages=find_packages(),
-      install_requires=['ecdsa>=0.13.0,<0.15.0'],
+      install_requires=['ecdsa>=0.15.0,<0.16.0'],
       extras_require={'develop': ['python-bitcoinlib==0.7.0']},
       description='A Python3 SegWit-compliant library which provides tools to handle Bitcoin data structures in a simple fashion.',
       author='chainside srl',
