@@ -210,7 +210,7 @@ class ExtendedPrivateKey(ExtendedKey):
 
     def get_child(self, index, hardened=False):
         left, right = self.get_hash(index, hardened)
-        k = (int(self) + left) % self.__class__.curve_order
+        k = int((int(self) + left) % self.__class__.curve_order)
         if k == 0:
             raise ValueError('Got 0 as k')
         return ExtendedPrivateKey(PrivateKey(k.to_bytes(32, 'big')),
