@@ -15,6 +15,7 @@ from hashlib import sha256
 from binascii import hexlify, unhexlify
 from abc import ABCMeta, abstractmethod
 
+from btcpy.utils.py_ripemd160 import ripemd160
 from ..lib.types import HexSerializable, Immutable, cached
 from ..lib.parsing import ScriptParser, Parser, Stream, UnexpectedOperationFound
 from ..lib.opcodes import OpCodeConverter
@@ -418,9 +419,8 @@ class ScriptPubKey(BaseScript, metaclass=ABCMeta):
 
     @cached
     def p2sh_hash(self):
-        ripemd160 = hashlib.new('ripemd160')
-        ripemd160.update(hashlib.sha256(self.body).digest())
-        return bytearray(ripemd160.digest())
+        ripe = ripemd160(hashlib.sha256(self.body).digest())
+        return bytearray(ripe)
 
     @cached
     def p2wsh_hash(self):

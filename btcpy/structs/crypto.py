@@ -16,6 +16,7 @@ from ecdsa.util import sigencode_der
 from functools import partial
 from abc import ABCMeta
 
+from btcpy.utils.py_ripemd160 import ripemd160
 from ..lib.base58 import b58decode_check, b58encode_check
 from ..lib.types import HexSerializable
 from .address import Address, SegWitAddress
@@ -197,9 +198,8 @@ class PublicKey(Key):
         import hashlib
         original = self.uncompressed if self.type == 'uncompressed' else self.compressed
         sha = hashlib.sha256(original).digest()
-        ripe = hashlib.new('ripemd160')
-        ripe.update(sha)
-        return bytearray(ripe.digest())
+        ripe = ripemd160(sha)
+        return bytearray(ripe)
 
     def serialize(self):
         return self.uncompressed if self.type == 'uncompressed' else self.compressed
