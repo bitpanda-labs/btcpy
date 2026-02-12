@@ -30,20 +30,21 @@ class Sighash(Immutable, HexSerializable):
              'NONE': 0x02,
              'SINGLE': 0x03}
 
-    def __init__(self, sighash, anyonecanpay=False):
+    def __init__(self, sighash, anyonecanpay=False, forkid=False):
         if sighash not in self.__class__.types:
             raise ValueError('Unknown sighash: {}'.format(sighash))
         object.__setattr__(self, 'sighash', sighash)
         object.__setattr__(self, 'anyone', anyonecanpay)
+        object.__setattr__(self, 'forkid', forkid)
 
     def __eq__(self, string):
         return self.sighash == string
 
     def __int__(self):
-        return self.__class__.types[self.sighash] | (0x80 if self.anyone else 0x00)
+        return self.__class__.types[self.sighash] | (0x40 if self.forkid else 0x00) | (0x80 if self.anyone else 0x00)
 
     def __str__(self):
-        return '[{}{}]'.format(self.sighash, '|ANYONECANPAY' if self.anyone else '')
+        return '[{}{}{}]'.format(self.sighash, '|FORKID' if self.forkid else '' ,'|ANYONECANPAY' if self.anyone else '')
 
     def as_byte(self):
         return int(self).to_bytes(1, 'little')
