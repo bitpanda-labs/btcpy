@@ -10,19 +10,18 @@
 # LICENSE.md file.
 
 
-from distutils.core import setup
-from setuptools import find_packages
+from setuptools import setup, find_packages
 
 setup(name='chainside-btcpy-multi',
-      version='0.2.84',
+      version='0.2.85',
       packages=find_packages(),
-      install_requires=['ecdsa>=0.14.0,<0.15.0'],
+      install_requires=['ecdsa>=0.19.0,<0.20.0'],
       extras_require={'develop': ['python-bitcoinlib==0.7.0']},
       description='A Python3 SegWit-compliant library which provides tools to handle Bitcoin data structures in a simple fashion.',
       author='chainside srl',
       author_email='simone.bronzini@chainside.net',
       url='https://github.com/bitpanda-labs/btcpy',
-      download_url='https://github.com/bitpanda-labs/btcpy/archive/refs/tags/0.2.84.tar.gz',
+      download_url='https://github.com/bitpanda-labs/btcpy/archive/refs/tags/0.2.85.tar.gz',
       python_requires='>=3',
       keywords=['bitcoin', 'blockchain', 'bitcoind', 'chainside'],
       zip_safe=False)

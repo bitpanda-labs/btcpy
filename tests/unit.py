@@ -21,7 +21,7 @@ from btcpy.structs.address import Address
 from btcpy.lib.codecs import CouldNotDecode
 from btcpy.setup import setup
 from btcpy.structs.hd import *
-from btcpy.lib.parsing import IncompleteParsingException
+from btcpy.lib.parsing import IncompleteParsingException, ScriptParser, UnexpectedOperationFound
 
 setup('regtest')
 
@@ -945,6 +945,48 @@ class TestSegwitSigs(unittest.TestCase):
                         self.assertEqual(hexlify(PrivateKey.unhexlify(txin['privk']).sign(bytearray(unhexlify(txin['digest'])),
                                                                                           deterministic=True)).decode(),
                                          tx['signature'])
+
+
+class TestRequirePushes(unittest.TestCase):
+    def test_returns_pushes(self):
+        # P2PKH script: OP_DUP OP_HASH160 <20-byte-hash> OP_EQUALVERIFY OP_CHECKSIG
+        # The 20-byte push is at byte offset 2
+        pubkh = b'\x90\x5f\x77\x00\x4d\x08\x1f\x20\xdd\x42\x1b\xa5\x28\x87\x66\xd5\x67\x24\xc3\xb2'
+        script_bytes = bytearray(unhexlify('76a914') + pubkh + unhexlify('88ac'))
+        # Start parser after OP_DUP OP_HASH160 (2 bytes) to point at the push data
+        parser = ScriptParser(script_bytes)
+        parser.pointer = 2  # skip OP_DUP and OP_HASH160
+        pushes = parser.require_pushes(zero=False)
+        self.assertEqual(len(pushes), 1)
+        self.assertEqual(pushes[0].data, bytearray(pubkh))
+
+    def test_zero_pushes_allowed(self):
+        # OP_CHECKSIG (0xac) is not a push op, so zero pushes with zero=True should return empty list
+        parser = ScriptParser(bytearray([0xac]))
+        pushes = parser.require_pushes(zero=True)
+        self.assertEqual(pushes, [])
+
+    def test_zero_pushes_raises(self):
+        # OP_CHECKSIG (0xac) is not a push op, so zero pushes with zero=False should raise
+        parser = ScriptParser(bytearray([0xac]))
+        with self.assertRaises(UnexpectedOperationFound):
+            parser.require_pushes(zero=False)
+
+    def test_empty_script_zero_allowed(self):
+        parser = ScriptParser(bytearray())
+        pushes = parser.require_pushes(zero=True)
+        self.assertEqual(pushes, [])
+
+    def test_empty_script_raises(self):
+        parser = ScriptParser(bytearray())
+        with self.assertRaises(UnexpectedOperationFound):
+            parser.require_pushes(zero=False)
+
+    def test_multiple_pushes(self):
+        script = bytearray([0x01, 0xaa, 0x01, 0xbb, 0xac])
+        parser = ScriptParser(script)
+        pushes = parser.require_pushes(zero=False)
+        self.assertEqual(len(pushes), 2)
 
 
 if __name__ == '__main__':

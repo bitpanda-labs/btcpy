@@ -298,10 +298,10 @@ class ScriptParser(Parser):
         except StopIteration:
             # we reached the end of the buffer
             pass
-        finally:
-            if not zero and len(pushes) == 0:
-                raise UnexpectedOperationFound('Found zero pushes, though more than zero required')
-            return pushes
+
+        if not zero and len(pushes) == 0:
+            raise UnexpectedOperationFound('Found zero pushes, though more than zero required')
+        return pushes
 
     def require_push(self, constraint):
         try:
